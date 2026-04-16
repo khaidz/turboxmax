@@ -2,15 +2,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Max Việt Nam - Chuyên Phân Phối Dầu Mỡ Nhờn Cao Cấp</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>Turbo Max Việt Nam - Chuyên Phân Phối Dầu Mỡ Nhờn Cao Cấp Chính Hãng</title>
+    <meta name="description" content="Turbo Max Việt Nam chuyên phân phối dầu nhớt Castrol, Hyundai, Petrolimex cao cấp. Giải pháp bôi trơn tối ưu cho động cơ và máy móc công nghiệp tại Hưng Yên và toàn quốc.">
+    <meta name="keywords" content="dầu nhớt, dầu nhờn, turbo max, dầu thủy lực, dầu bánh răng, castrol, hyundai, petrolimex, bôi trơn động cơ, dầu nhớt hưng yên">
+    <meta name="author" content="Turbo Max Việt Nam">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://turbomax.vn/">
+    <meta property="og:title" content="Turbo Max Việt Nam - Chuyên Phân Phối Dầu Mỡ Nhờn Cao Cấp">
+    <meta property="og:description" content="Cung cấp dầu nhớt chính hãng, bảo vệ động cơ bền bỉ. Tư vấn giải pháp bôi trơn chuyên nghiệp.">
+    <meta property="og:image" content="./images/turbomax-vip.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Turbo Max Việt Nam - Dầu Nhờn Cao Cấp">
+    <meta property="twitter:description" content="Nhà phân phối dầu mỡ nhờn uy tín hàng đầu cho doanh nghiệp vận tải và công nghiệp.">
+
+	<!-- Favicon -->
+    <link rel="icon" type="image/png" href="./images/favicon.png">
+    <link rel="apple-touch-icon" href="./images/favicon.png">
+	
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; overflow-x: hidden; }
-        .gradient-bg { background: linear-gradient(135deg, #003366 0%, #001a33 100%); }
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; overflow-x: hidden; position: relative; }
+        .gradient-overlay { background: linear-gradient(135deg, rgba(0, 51, 102, 0.9) 0%, rgba(0, 26, 51, 0.8) 100%); }
         .accent-orange { color: #f97316; }
         .bg-accent-orange { background-color: #f97316; }
         
+        /* Background Slider Styles */
+        .hero-slider-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+        .hero-slide.active {
+            opacity: 1;
+        }
+
         /* Card & Image Effects */
         .card-shadow { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .card-shadow:hover { transform: translateY(-10px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -6px rgba(0, 0, 0, 0.1); }
@@ -77,23 +124,82 @@
             left: 100%;
             top: 100%;
         }
+
+        /* Phone Ring Animation */
+        @keyframes ring {
+            0% { transform: scale(1); }
+            10% { transform: scale(1.1) rotate(5deg); }
+            20% { transform: scale(1.1) rotate(-5deg); }
+            30% { transform: scale(1.1) rotate(5deg); }
+            40% { transform: scale(1.1) rotate(-5deg); }
+            50% { transform: scale(1); }
+            100% { transform: scale(1); }
+        }
+        .animate-ring { animation: ring 1.5s infinite; }
+
+        /* Oil Drop Effect - Updated to be brighter and on top */
+        .oil-drop {
+            position: fixed;
+            bottom: -50px;
+            background: linear-gradient(to bottom, rgba(255, 230, 100, 0.8), rgba(255, 180, 0, 0.6));
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            pointer-events: none;
+            z-index: 45; /* Higher than hero content but lower than Nav/Buttons */
+            animation: rise linear forwards;
+            box-shadow: 0 0 10px rgba(255, 200, 0, 0.4);
+        }
+        @keyframes rise {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-110vh) scale(0.6); opacity: 0; }
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 border-t-4 border-orange-500">
 
+    <!-- Container for Oil Drops - Moved Z-Index higher -->
+    <div id="oil-container" class="fixed inset-0 pointer-events-none z-[45]"></div>
+
+    <!-- Floating Action Buttons (Zalo & Call) -->
+    <div class="fixed bottom-6 right-6 z-[60] flex flex-col space-y-4">
+        <!-- Zalo Button -->
+        <a href="https://zalo.me/0918348822" target="_blank" class="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform group relative">
+            <span class="absolute right-full mr-3 bg-blue-600 text-white px-3 py-1 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">Chat Zalo</span>
+            <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.002 2C6.477 2 2 6.477 2 12c0 1.258.232 2.46.654 3.565L2 22l6.435-1.346c1.105.422 2.307.654 3.565.654 5.523 0 10-4.477 10-10s-4.477-10-10-10zm.115 15.65h-1.31v-5.266L8.14 17.65H6.83l3.204-5.228-3.04-4.885h1.31l2.454 4.09 2.38-4.09h1.31l-2.96 4.96 3.432 5.153z"/>
+            </svg>
+        </a>
+        <!-- Call Button -->
+        <a href="tel:0918348822" class="w-14 h-14 bg-orange-500 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform group relative animate-ring">
+            <span class="absolute right-full mr-3 bg-orange-500 text-white px-3 py-1 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">Gọi ngay: 0918.348.822</span>
+            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+            </svg>
+        </a>
+    </div>
+
     <!-- Navigation -->
     <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
+            <div class="flex justify-between h-14 items-center">
                 <div class="flex-shrink-0 flex items-center">
-                    <span class="text-2xl font-bold text-[#003366]">TURBO <span class="text-orange-500">MAX</span></span>
+                    <!-- Integrated Logo -->
+                    <img src="./images/logo.png" alt="Turbo Max Logo" class="h-14 w-auto object-contain">
+					<div class="flex-shrink-0 flex items-center">
+						<span class="text-2xl font-bold text-[#003366]">TURBO <span class="text-orange-500">MAX</span></span>
+					</div>
                 </div>
                 <!-- Desktop Menu -->
-                <div class="hidden md:flex space-x-8 font-medium text-sm">
+                <div class="hidden md:flex space-x-8 font-medium text-sm items-center">
                     <a href="#home" class="hover:text-orange-500 transition">Trang chủ</a>
                     <a href="#about" class="hover:text-orange-500 transition">Giới thiệu</a>
                     <a href="#products" class="hover:text-orange-500 transition">Sản phẩm</a>
                     <a href="#contact" class="hover:text-orange-500 transition">Liên hệ</a>
+                    <a href="tel:0918348822" class="flex items-center space-x-2 bg-orange-50 text-orange-600 px-4 py-2 rounded-full border border-orange-200 hover:bg-orange-500 hover:text-white transition-all">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path></svg>
+                        <span class="font-bold">0918.348.822</span>
+                    </a>
                 </div>
                 <!-- Mobile Menu Button -->
                 <div class="md:hidden">
@@ -109,17 +215,32 @@
             <a href="#about" class="block text-lg font-medium">Giới thiệu</a>
             <a href="#products" class="block text-lg font-medium">Sản phẩm</a>
             <a href="#contact" class="block text-lg font-medium">Liên hệ</a>
+            <a href="tel:0918348822" class="block text-lg font-bold text-orange-500 bg-orange-50 py-3 rounded-xl">Hotline: 0918.348.822</a>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="relative pt-28 pb-20 lg:pt-32 lg:pb-20 gradient-bg text-white overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-            <div class="absolute top-[-10%] left-[-5%] w-72 h-72 bg-orange-500/10 rounded-full blur-3xl animate-pulse"></div>
-            <div class="absolute bottom-[10%] right-[-5%] w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+    <!-- Hero Section with Background Slider -->
+    <section id="home" class="relative pt-28 pb-20 lg:pt-32 lg:pb-32 text-white overflow-hidden min-h-[600px] flex items-center">
+        <!-- Background Images Layer -->
+        <div class="hero-slider-container">
+            <!-- Slide 1: Industrial Machinery -->
+            <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1590227763209-821c686b932f?q=80&w=1170&auto=format&fit=crop');"></div>
+            <!-- Slide 2: Engine Detail -->
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1645754884968-a00b7ed62c43?q=80&w=2070&auto=format&fit=crop');"></div>
+            <!-- Slide 3: Truck/Logistics -->
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1600');"></div>
+        </div>
+        
+        <!-- Dark Overlay Layer -->
+        <div class="absolute top-0 left-0 w-full h-full gradient-overlay z-[1]"></div>
+
+        <!-- Decorative Elements -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-[2]">
+            <div class="absolute top-[-10%] left-[-5%] w-72 h-72 bg-orange-500/20 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-[10%] right-[-5%] w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center lg:text-left lg:flex items-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-[10] text-center lg:text-left lg:flex items-center">
             <div class="lg:w-1/2 opacity-0 animate-[fadeInLeft_1s_ease-out_forwards]">
                 <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
                     Giải pháp bôi trơn <br>
@@ -127,7 +248,7 @@
                         Tối ưu & Bền bỉ
                     </span>
                 </h1>
-                <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto lg:mx-0 opacity-0 animate-[fadeInUp_1s_ease-out_0.3s_forwards]">
+                <p class="text-lg md:text-xl text-gray-200 mb-10 max-w-2xl mx-auto lg:mx-0 opacity-0 animate-[fadeInUp_1s_ease-out_0.3s_forwards]">
                     Turbo Max Việt Nam - Nhà phân phối chính hãng dầu mỡ nhờn Castrol, Hyundai, Petrolimex. Giúp máy móc của bạn luôn vận hành ở phong độ cao nhất.
                 </p>
                 <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 opacity-0 animate-[fadeInUp_1s_ease-out_0.6s_forwards]">
@@ -135,20 +256,23 @@
                         Xem Sản Phẩm
                         <svg class="w-5 h-5 ml-2 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </a>
-                    <a href="#contact" class="px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/30 rounded-full font-bold transition-all hover:scale-105">Tư vấn ngay</a>
+                    <a href="tel:0918348822" class="px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/30 rounded-full font-bold transition-all hover:scale-105 flex items-center justify-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path></svg>
+                        Tư vấn: 0918.348.822
+                    </a>
                 </div>
             </div>
 
             <div class="hidden lg:block lg:w-1/2 mt-12 lg:mt-0 relative opacity-0 animate-[fadeInRight_1s_ease-out_forwards]">
                 <div class="relative w-full h-[500px] flex justify-center items-center">
-                    <div class="absolute w-[450px] h-[450px] border border-white/5 rounded-full animate-[spin_20s_linear_infinite]"></div>
-                    <div class="absolute w-[350px] h-[350px] border border-orange-500/20 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
+                    <div class="absolute w-[450px] h-[450px] border border-white/10 rounded-full animate-[spin_20s_linear_infinite]"></div>
+                    <div class="absolute w-[350px] h-[350px] border border-orange-500/30 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
                     
                     <div class="relative z-10 p-4 animate-floating">
-                        <div class="p-2 border border-white/10 rounded-3xl backdrop-blur-md bg-white/5 shadow-2xl">
-                            <img src="https://images.unsplash.com/photo-1486006920555-c77dcf18193c?auto=format&fit=crop&q=80&w=600" 
+                        <div class="p-2 rounded-3xl backdrop-blur-md">
+                            <img src="./images/turbomax-vip-removebg.png" 
                                  alt="Máy móc công nghiệp" 
-                                 class="rounded-2xl shadow-2xl grayscale hover:grayscale-0 transition-all duration-700 w-[400px]">
+                                 class="rounded-2xl shadow-2xl transition-all duration-700 w-[600px]">
                             <div class="absolute -bottom-6 -right-6 bg-white p-4 rounded-2xl shadow-xl animate-bounce" style="animation-duration: 3s;">
                                 <div class="text-[#003366] font-bold text-xl">100%</div>
                                 <div class="text-gray-500 text-xs uppercase font-semibold">Chính hãng</div>
@@ -172,7 +296,6 @@
                     <p>Trong xu thế phát triển công nghiệp hóa – hiện đại hóa, chúng tôi hiểu rằng "sức khỏe" của máy móc và động cơ chính là nhịp đập của doanh nghiệp.</p>
                     <p>Với sứ mệnh mang đến những giải pháp bôi trơn tối ưu, <strong>Turbo Max Việt Nam</strong> tự hào là đơn vị uy tín chuyên phân phối các dòng dầu mỡ nhờn cao cấp từ các thương hiệu hàng đầu thế giới.</p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
-                        <!-- Items with hover effects -->
                         <div class="flex items-center space-x-3 group hover:translate-x-2 transition-transform">
                             <div class="bg-green-100 p-1 rounded-full group-hover:bg-green-200 transition-colors"><svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
                             <span>Chính hãng 100%</span>
@@ -191,14 +314,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-100 p-8 rounded-3xl relative reveal reveal-right">
-                    <div class="absolute -top-4 -right-4 bg-orange-500 text-white px-4 py-2 rounded-xl font-bold shadow-lg text-sm animate-pulse">
-                        MST: 1001280055
+                <div class="bg-gray-100 p-8 rounded-3xl relative reveal reveal-right border-l-8 border-orange-500 shadow-inner">
+                    <div class="absolute -top-4 -right-4 bg-[#003366] text-white px-4 py-2 rounded-xl font-bold shadow-lg text-sm">
+                        Hotline: 0918.348.822
                     </div>
-                    <blockquote class="text-xl italic text-gray-500 border-l-4 border-orange-500 pl-6 py-2">
+                    <blockquote class="text-xl italic text-gray-500 pl-2 py-2">
                         "Chúng tôi cam kết đồng hành cùng Quý vị trên con đường phát triển bền vững và thịnh vượng."
                     </blockquote>
-                    <p class="mt-4 text-sm text-gray-400">— Ban Giám Đốc Turbo Max</p>
+                    <p class="mt-4 text-sm text-gray-400 font-semibold uppercase tracking-wider">— Ban Giám Đốc Turbo Max</p>
+                    <div class="mt-6 flex space-x-3">
+                        <a href="tel:0918348822" class="flex-1 bg-orange-500 text-white text-center py-3 rounded-xl font-bold hover:bg-orange-600 transition-colors shadow-md">Gọi tư vấn</a>
+                        <a href="https://zalo.me/0918348822" class="flex-1 bg-blue-600 text-white text-center py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-md">Chat Zalo</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -207,7 +334,7 @@
     <!-- Detailed Products Category -->
     <section id="products" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 reveal reveal-up">
+            <div class="text-center mb-16 reveal reveal-up active">
                 <h2 class="text-3xl md:text-4xl font-bold text-[#003366] mb-4">Danh Mục Sản Phẩm</h2>
                 <div class="w-16 h-1 bg-orange-500 mx-auto mb-4"></div>
                 <p class="text-gray-500 max-w-2xl mx-auto">Sản phẩm nhập khẩu chính ngạch từ Mỹ, bảo vệ tối ưu cho mọi loại động cơ.</p>
@@ -216,7 +343,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
                 
                 <!-- Product 1 -->
-                <div class="bg-white rounded-3xl overflow-hidden card-shadow border border-gray-200 flex flex-col h-full group reveal reveal-up stagger-1">
+                <div class="bg-white rounded-3xl overflow-hidden card-shadow border border-gray-200 flex flex-col h-full group reveal reveal-up stagger-1 active">
                     <div class="bg-[#003366] py-3 px-4 text-center">
                         <span class="text-white text-[10px] font-bold uppercase tracking-widest">Premium CF-4</span>
                     </div>
@@ -246,7 +373,7 @@
                 </div>
 
                 <!-- Product 2 -->
-                <div class="bg-white rounded-3xl overflow-hidden card-shadow border-2 border-orange-500 flex flex-col h-full relative group reveal reveal-up stagger-2">
+                <div class="bg-white rounded-3xl overflow-hidden card-shadow border-2 border-orange-500 flex flex-col h-full relative group reveal reveal-up stagger-2 active">
                     <div class="absolute top-10 right-0 bg-orange-500 text-white text-[10px] px-3 py-1 rounded-l-full font-bold uppercase z-10 shadow-lg">Bán chạy</div>
                     <div class="bg-orange-600 py-3 px-4 text-center">
                         <span class="text-white text-[10px] font-bold uppercase tracking-widest">Turbomax CI-4</span>
@@ -276,7 +403,7 @@
                 </div>
 
                 <!-- Product 3 -->
-                <div class="bg-white rounded-3xl overflow-hidden card-shadow border border-gray-200 flex flex-col h-full group reveal reveal-up stagger-3">
+                <div class="bg-white rounded-3xl overflow-hidden card-shadow border border-gray-200 flex flex-col h-full group reveal reveal-up stagger-3 active">
                     <div class="bg-slate-700 py-3 px-4 text-center">
                         <span class="text-white text-[10px] font-bold uppercase tracking-widest">Hydraulic AWS 68</span>
                     </div>
@@ -305,7 +432,7 @@
                 </div>
 
                 <!-- Product 4 -->
-                <div class="bg-white rounded-3xl overflow-hidden card-shadow border border-gray-200 flex flex-col h-full group reveal reveal-up stagger-4">
+                <div class="bg-white rounded-3xl overflow-hidden card-shadow border border-gray-200 flex flex-col h-full group reveal reveal-up stagger-4 active">
                     <div class="bg-slate-800 py-3 px-4 text-center">
                         <span class="text-white text-[10px] font-bold uppercase tracking-widest">Gear Oil GL-5</span>
                     </div>
@@ -336,14 +463,14 @@
             </div>
         </div>
     </section>
-
+	
 	<!-- Why Choose Us -->
     <section class="py-14 bg-white overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold text-[#003366] mb-16 reveal reveal-up">Tại sao các đội xe chọn Turbo Max?</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <h2 class="text-3xl font-bold text-[#003366] mb-16 reveal reveal-up active">Tại sao các đội xe chọn Turbo Max?</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <!-- Icon 1 -->
-                <div class="space-y-3 reveal reveal-zoom stagger-1">
+                <div class="space-y-3 reveal reveal-zoom stagger-1 active">
                     <div class="w-16 h-16 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 hover:rotate-12 transition-transform">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                     </div>
@@ -351,7 +478,7 @@
                     <p class="text-sm text-gray-500">Giảm ma sát tối đa, kéo dài tuổi thọ máy.</p>
                 </div>
                 <!-- Icon 2 -->
-                <div class="space-y-3 reveal reveal-zoom stagger-2">
+                <div class="space-y-3 reveal reveal-zoom stagger-2 active">
                     <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 hover:rotate-12 transition-transform">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     </div>
@@ -359,7 +486,7 @@
                     <p class="text-sm text-gray-500">Độ nhớt ổn định giúp động cơ nhẹ nhàng.</p>
                 </div>
                 <!-- Icon 3 -->
-                <div class="space-y-3 reveal reveal-zoom stagger-3">
+                <div class="space-y-3 reveal reveal-zoom stagger-3 active">
                     <div class="w-16 h-16 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 hover:rotate-12 transition-transform">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
                     </div>
@@ -367,7 +494,7 @@
                     <p class="text-sm text-gray-500">Dòng sản phẩm cao cấp, tiêu chuẩn quốc tế.</p>
                 </div>
                 <!-- Icon 4 -->
-                <div class="space-y-3 reveal reveal-zoom stagger-4">
+                <div class="space-y-3 reveal reveal-zoom stagger-4 active">
                     <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 hover:rotate-12 transition-transform">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </div>
@@ -379,16 +506,24 @@
     </section>
 
     <!-- Contact & Footer -->
-    <footer id="contact" class="bg-[#001a33] text-white pt-20 pb-10">
+    <footer id="contact" class="bg-[#001a33] text-white pt-10 pb-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-10">
                 <div class="lg:col-span-2 reveal reveal-left">
-                    <span class="text-3xl font-bold mb-6 block">TURBO <span class="text-orange-500">MAX</span> VIỆT NAM</span>
+                    <!-- Integrated Logo in Footer -->
+                    <div class="mb-6 flex items-center space-x-3">
+                        <img src="./images/logo.png" alt="Turbo Max Logo Footer" class="h-16 w-auto">
+                        <span class="text-2xl font-bold tracking-tight">TURBO MAX <span class="text-orange-500 text-sm block font-normal tracking-widest opacity-80 uppercase">VIỆT NAM</span></span>
+                    </div>
                     <p class="text-gray-400 mb-8 max-w-md">Chúng tôi luôn sẵn sàng lắng nghe và tư vấn giải pháp bôi trơn tối ưu nhất cho doanh nghiệp của bạn.</p>
                     <div class="space-y-4">
                         <div class="flex items-start space-x-4 group">
                             <div class="bg-white/10 p-2 rounded-lg group-hover:bg-orange-500 transition-colors"><svg class="w-5 h-5 text-orange-500 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg></div>
                             <span class="text-gray-300">Thôn Bến Hòa, Xã Nam Đông Hưng, Hưng Yên</span>
+                        </div>
+                        <div class="flex items-start space-x-4 group">
+                            <div class="bg-white/10 p-2 rounded-lg group-hover:bg-orange-500 transition-colors"><svg class="w-5 h-5 text-orange-500 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg></div>
+                            <a href="tel:0918348822" class="text-gray-300 hover:text-orange-500 transition-colors">Hotline: 0918.348.822</a>
                         </div>
                         <div class="flex items-start space-x-4 group">
                             <div class="bg-white/10 p-2 rounded-lg group-hover:bg-orange-500 transition-colors"><svg class="w-5 h-5 text-orange-500 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg></div>
@@ -401,8 +536,7 @@
                     <ul class="space-y-4 text-gray-400">
                         <li><a href="#about" class="hover:text-orange-500 transition-colors">Giới thiệu công ty</a></li>
                         <li><a href="#products" class="hover:text-orange-500 transition-colors">Danh mục sản phẩm</a></li>
-                        <li><a href="#" class="hover:text-orange-500 transition-colors">Chính sách bảo hành</a></li>
-                        <li><a href="#" class="hover:text-orange-500 transition-colors">Kỹ thuật dầu nhớt</a></li>
+                        <li><a href="https://zalo.me/0918348822" class="hover:text-orange-500 transition-colors">Tư vấn qua Zalo</a></li>
                     </ul>
                 </div>
                 <div class="reveal reveal-right">
@@ -414,13 +548,56 @@
                 </div>
             </div>
             <div class="pt-8 border-t border-white/5 text-center text-gray-500 text-sm">
-                <p>&copy; 2024-2025 CÔNG TY TNHH TM & DV TURBO MAX VIỆT NAM. Đã đăng ký bản quyền.</p>
+                <p>&copy; 2024-2026 CÔNG TY TNHH TM & DV TURBO MAX VIỆT NAM. Đã đăng ký bản quyền.</p>
             </div>
         </div>
     </footer>
 
     <!-- Scripts -->
     <script>
+        // Hero Background Slider Logic
+        const slides = document.querySelectorAll('.hero-slide');
+        let currentSlide = 0;
+
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        setInterval(nextSlide, 5000); // Change image every 5 seconds
+
+        // Oil Drop Generator Logic
+        function createOilDrop() {
+            const container = document.getElementById('oil-container');
+            if (!container) return;
+
+            const drop = document.createElement('div');
+            drop.className = 'oil-drop';
+            
+            // Random properties
+            const size = Math.random() * 12 + 4; // 4px to 16px
+            const left = Math.random() * 100; // 0 to 100%
+            const duration = Math.random() * 4 + 4; // 4s to 8s
+            const delay = Math.random() * 5;
+
+            drop.style.width = `${size}px`;
+            drop.style.height = `${size * 1.5}px`; // More elongated shape
+            drop.style.left = `${left}%`;
+            drop.style.animationDuration = `${duration}s`;
+            drop.style.animationDelay = `${delay}s`;
+
+            container.appendChild(drop);
+
+            // Remove drop after animation ends
+            setTimeout(() => {
+                drop.remove();
+            }, (duration + delay) * 1000);
+        }
+
+        // Generate drops periodically
+        setInterval(createOilDrop, 700);
+
         // Mobile menu toggle
         const btn = document.getElementById('mobile-menu-button');
         const menu = document.getElementById('mobile-menu');
@@ -445,8 +622,6 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
-                    // Tùy chọn: ngắt quan sát sau khi đã hiện
-                    // observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
@@ -460,12 +635,12 @@
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
+                if (targetId === '#' || targetId === '') return;
                 
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     window.scrollTo({
-                        top: targetElement.offsetTop - 64, // offset for fixed nav
+                        top: targetElement.offsetTop - 80, // offset for fixed nav (height 20)
                         behavior: 'smooth'
                     });
                 }
